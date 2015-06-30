@@ -1,31 +1,27 @@
+library(xlsx)
 # read in the headings for this dataset 
 headings <- read.xlsx("data/tab5-6.xlsx", 1, startRow = 3, endRow = 3, header = F)
 headings[1] <- "field"
-# read in the data for whites 
-x <- read.xlsx("data/tab5-6.xlsx", 1, startRow = 6, endRow = 50, header = F)
-colnames(x) <- headings
-whites <- x[!is.na(x$field),]
-# plot trend over years 
+
+get_section <- function(s, e){
+  x <- read.xlsx("data/tab5-6.xlsx", 1, startRow = s, endRow = e, header = F)
+  colnames(x) <- headings
+  x[!is.na(x$field), ]
+}
+
+whites <- get_section(6, 50)
 plot(colnames(whites[,-1]), whites[6, -1], type = "b", col = "red", main = "% of CS Bachelor Degrees Awarded \nto Whites")
 
-x <- read.xlsx("data/tab5-6.xlsx", 1, startRow = 53, endRow = 97, header = F)
-colnames(x) <- headings
-asians <- x[!is.na(x$field), ]
+asians <- get_section(53, 97)
 plot(colnames(asians[,-1]), asians[6, -1], type = "b", col = "red", main = "% of CS Bachelor Degrees Awarded \nto Asians")
 
-x <- read.xlsx("data/tab5-6.xlsx", 1, startRow = 100, endRow = 144, header = F)
-colnames(x) <- headings
-blacks <- x[!is.na(x$field), ]
+blacks <- get_section(100, 144)
 plot(colnames(blacks[,-1]), blacks[6, -1], type = "b", col = "red", main = "% of CS Bachelor Degrees Awarded \nto Blacks")
 
-x <- read.xlsx("data/tab5-6.xlsx", 1, startRow = 147, endRow = 191, header = F)
-colnames(x) <- headings
-latinos <- x[!is.na(x$field), ]
+latinos <- get_section(147, 191)
 plot(colnames(latinos[,-1]), latinos[6, -1], type = "b", col = "red", main = "% of CS Bachelor Degrees Awarded \nto Latinos")
 
-x <- read.xlsx("data/tab5-6.xlsx", 1, startRow = 194, endRow = 238, header = F)
-colnames(x) <- headings
-natives <- x[!is.na(x$field), ]
+natives <- get_section(194, 238)
 plot(colnames(natives[,-1]), natives[6, -1], type = "b", col = "red", main = "% of CS Bachelor Degrees Awarded \nto American Indians")
 
 # create a new data frame that makes the data easier to plot together
