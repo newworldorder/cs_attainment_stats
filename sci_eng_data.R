@@ -24,14 +24,15 @@ plot(colnames(latinos[,-1]), latinos[6, -1], type = "b", col = "red", main = "% 
 natives <- get_section(194, 238)
 plot(colnames(natives[,-1]), natives[6, -1], type = "b", col = "red", main = "% of CS Bachelor Degrees Awarded \nto American Indians")
 
-# create a new data frame that makes the data easier to plot together
-# df --> year (Date), percentage (numeric), race (factor)
+years <- as.Date(colnames(natives[,-1]), "%Y")
+years <- rep(years, 5)
+percentages <- c(whites[6, -1], asians[6,-1], blacks[6,-1], latinos[6,-1], natives[6,-1])
+colnames(percentages) <- NULL
+percentages <- unlist(percentages)
+races <- gl(5, 11, labels = c("whites", "asians", "blacks", "latinos", "natives"))
 
-#xval <- as.Date(colnames(whites[,-1]), "%Y")
-#ggplot(df1,aes(x,y))+geom_line(aes(color="First line"))+
-#geom_line(data=df2,aes(color="Second line"))+
-#  labs(color="Legend text")
-
-# Read in data for each other race
-
-# Plot these separately and together 
+df <- data.frame(year=years, percentage=percentages, race=races)
+library(ggplot2)
+p <- qplot(df$year, df$percentage, color = df$race, geom="smooth", main = "CS Degree Attainment Across Races", ylab = "% of Bachelor CS Degrees Awarded", xlab = "Year")
+p <- p + labs(colour = "Race")
+print(p)
